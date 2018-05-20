@@ -1,35 +1,36 @@
-=begin
-Make an OrangeTree class that has a height method that returns its height
-After a number of years the tree must die
-During the first few years the tree should not produce fruit
-The production should be increasing with the years (and decreasing at the end?)
-Be able to count the oranges and pick one
-=end
+
+#Tree that is able to age, grow and produce oranges every year
+
 
 class OrangeTree
   def initialize
     @height = 0 #cm
     @age = 0
+    @alive = true
   end
 
   #method that returns its height
   def height
     puts "Your orange tree is #{@height}cm"
+    is_alive?
   end
 
-  #A one_year_passes method
+  def age
+    puts "The tree age is #{@age}"
+    is_alive?
+  end
+
   def one_year_passes
     @oranges = 0 #no oranges from the past year
     @age += 1
     check_age
+    is_alive?
   end
 
-  #A count oranges method
   def count_oranges
     puts "You have #{@oranges} left this year"
   end
 
-  #A pick an orange method
   def pick_orange
     if @oranges == 0
       puts "You don't have any oranges to pick up"
@@ -42,25 +43,28 @@ class OrangeTree
 
   private
 
-  # We need a method to check the age and set production depending on age
-  #from 0 to 5 no production 30cm growth, from 6 to 15 10 oranges 10cm growth,
-  #from 16 to 45 25 oranges 1cm groth
-  #from 46 to 60 10 oranges no growth
-  #if 61 die
-
   def add (height, oranges)
     @height += height
     @oranges += oranges
   end
 
+  def is_alive?
+    if @alive == false
+      @height = 0
+      @oranges = 0
+      @age = 61
+      puts "Your orange tree is not living anymore"
+    end
+  end
+
   def check_age
-   case @age
+   case @age #Set height and oranges with a function
    when 0 .. 5 then add(30, 0)
    when 6 .. 15 then add(10, 10)
    when 16 .. 45 then add(1, 25)
    when 46 .. 60 then add(0, 10)
    else
-     puts "Your orange tree died"
+     @alive = false
    end
   end
 
