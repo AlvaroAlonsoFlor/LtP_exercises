@@ -9,7 +9,6 @@ class OrangeTree
     @alive = true
   end
 
-  
   def height
     puts "Your orange tree is #{@height}cm"
     is_alive?
