@@ -35,19 +35,20 @@ end
 
 class Profile
 
-  def initialize
-  end
   #def prof_block (block_description, &block) #Since blocks can't be stored it doesn't make much sense
 
-  def prof_proc(proc1)
+  def prof(proc_or_lambda)
     @start_time = Time.new
-    proc1.call
-    @duration = Time.new - start_time
-    puts "This process took #{@duration}"
+    proc_or_lambda.call
+    @duration = Time.new - @start_time
+    return "This process took #{@duration} seconds"
   end
 
-
-  def prof_method #Let's see if I can do it with methods as well
+  def prof_func(function) #There is no use for this one, just for testing purposes, 0.0 sec
+    @start_time = Time.new
+    function
+    @duration = Time.new - @start_time
+    return "This process took #{@duration} seconds"
   end
 
 end
@@ -59,3 +60,31 @@ my_test = Proc.new do
     number += 1
   end
 end
+
+my_test_2 = lambda do
+  number = 0
+  1000000.times do
+    number += 1
+  end
+  return number
+end
+
+def my_func
+  number = 0
+  1000000.times do
+    number += 1
+  end
+  return number
+end
+
+#TEST WITH PROC
+profile_proc = Profile.new
+profile_proc.prof(my_test) #0.4 sec
+
+#TEST WITH LAMBDA
+profile_lambda = Profile.new
+profile_lambda.prof(my_test_2) #0.4 sec
+
+#TEST WITH FUNCTION
+profile_my_func = Profile.new
+profile_my_func.prof_func(my_func) #0.0 sec, it calls the method when you define the variable?
